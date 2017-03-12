@@ -1,0 +1,25 @@
+{
+    "Easy": [
+        "jumps",
+        "spice",
+        "jonny",
+        "pipes",
+        "spike",
+        "close",
+        "field",
+        "major",
+        "robco",
+        "snake",
+        "plate",
+        "light",
+        "table"
+    ],
+
+    "Medium": [
+        "7 letter words"
+    ],
+
+    "Hard": [
+        "9 letter words"
+    ]
+}
