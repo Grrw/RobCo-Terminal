@@ -1,9 +1,16 @@
-import random, json, time, datetime
+import random, json, time, datetime, sys
 
 def t():
-    length = random.randrange(1,5)
+    length = random.randrange(0,5)
     length = "0." + str(length)
     time.sleep(float(length))
+
+def onebyone(user_input):
+    for x in user_input:
+        sys.stdout.write(x)
+        sys.stdout.flush()
+        t()
+    
 
 def startup():
     now = datetime.datetime.now()
@@ -13,7 +20,6 @@ def startup():
     print('       '+str(now))
     print()
     startupList = [
-        ' BOOTING SYSTEM.',
         ' RobCo-OS v7.6.0.3',
         ' SYSTEM 64k RAM',
         ' NO HOLOTAPE FOUND',
@@ -22,7 +28,7 @@ def startup():
         ' '+str(length)+' BYTES FREE | OK',
         ' 120 POKE 736, ' + str(length) + ' x$=""LH) 6;T',
         ' unable to resolve host TERML-z' + str(length),
-        ' Get: 2 11kbps [472 B]'
+        ' Get: 2 14kbps [472 B]'
         ' Init97',
         ' No UNIVAC tape found. Mounted drive in /mnt/.',
         ' Processor: GE Athlon(tm) 16 Processor 10+'
@@ -32,35 +38,44 @@ def startup():
         ' Temperature: '+str(length)+'°Ra',
         ' Temperature protection is ON',
         ' CPU SPEED '+str(length)+'9172 Hz',
-        ' Onboard Audio Disabled. No Audio Chip Found.',
+        ' No Audio Chip Found. Onboard Audio Disabled.',
         ' K987PV-PLUS-PRO',
-        ' RobCo Macrosystems 6e UNABLE ^5 10-',
+        ' RobCo Macrosystems 6e UNABLE-5 10-',
         ' No Virtual Machine support found.',
         ' Virus Support [Disabled]',
+        ' NetPreceder(tm) Lettering Test: F Ώ Ж 化け � [FAIL]'
     ]
+    print(' BOOTING SYSTEM.')
+    time.sleep(1.3)
+    t()
     for q in range(random.randrange(11,22)):
         item = random.randrange(0, len(startupList))
         print(startupList[item])
         startupList.pop(item)
         t()
         t()
-    print('\n LOAD ROM(914): TRSPS MNGR 103\n')
+    length -= 11111
+    if length < 10000:
+        length = random.randrange(10000, 99999)
+    l = str(length)
+    print('\n LOAD ROM('+l[2]+l[1]+l[4]+'): TRSPS MNGR V'+l[0]+l[3]+l[2]+'\n')
     time.sleep(2.3)
     t()
     print(' ROBCO INDUSTRIES UNIFIED OPERATING SYSTEM')
     t()
     print('   COPYRIGHT 2075-2077 ROBCO INDUSTRIES')
-    print('        '+str(now)+'\n')
+    print('        '+str(now)+'\n                [Loading]')
     t()
     time.sleep(0.5)
     t()
     print('   -RobCo Trespasser Management System-')
     t()
-    print('   ====================================')
+    onebyone('   ====================================\n')
     t()
-    print('\n\n\n')
+    print('')
     t()
-    print('                 Loading...')
+    print()
+    print()
     t()
     t()
     time.sleep(0.8)
@@ -85,17 +100,12 @@ def initrand(user_list):
     """
     startupList = []
     for x in range(5):
-        print(user_list)
-        t()
         popper = random.randrange(0, len(user_list))
-        print(popper)
-        t()
-        print(user_list[popper])
-        t
         startupList.append(user_list[popper])
-        print(startupList)
-        t()
+        print(user_list[popper])
         user_list.pop(popper)
+        t()
+        time.sleep(0.2)
     print(chr(27) + "[2J")
     return startupList
 
