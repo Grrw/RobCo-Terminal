@@ -77,6 +77,7 @@ while not quit_:
                 time.sleep(2)
                 security.t()
                 security.startup()
+                rowFour = False
 
     while not secondarySelector: 
 
