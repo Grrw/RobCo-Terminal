@@ -1,82 +1,98 @@
-import random, json, time, datetime, sys
+import random, json, time, datetime, curses
 
 def t():
     length = random.randrange(0,5)
     length = "0." + str(length)
     time.sleep(float(length))
 
-def onebyone(user_input):
-    for x in user_input:
-        sys.stdout.write(x)
-        sys.stdout.flush()
-        t()
-    
-
-def startup():
+def startup(stdscr):
     now = datetime.datetime.now()
     length = random.randrange(30021, 68904, 7)
-    print(chr(27) + "[2J")
-    print(' **** ROBCO TERMLINK UPLINK SYSTEM ****')
-    print('       '+str(now))
-    print()
+    stdscr.clear()
+    stdscr.refresh()
+
+    stdscr.addstr(' **** ROBCO TERMLINK UPLINK SYSTEM ****\n',curses.color_pair(1))
+    stdscr.refresh()
+    stdscr.addstr('       '+str(now)+'\n',curses.color_pair(1))
+    stdscr.refresh()
     startupList = [
-        ' RobCo-OS v7.6.0.3',
-        ' SYSTEM 64k RAM',
-        ' NO HOLOTAPE FOUND',
-        ' 00b160ff 00064b72 0005aa6c 000a36c0 0007dc12 0007d490 00018471 000b16d3',
-        ' load 7a 73 6e 74 6c',
-        ' '+str(length)+' BYTES FREE | OK',
-        ' 120 POKE 736, ' + str(length) + ' x$=""LH) 6;T',
-        ' unable to resolve host TERML-z' + str(length),
-        ' Get: 2 14kbps [472 B]'
-        ' Init97',
-        ' No UNIVAC tape found. Mounted drive in /mnt/.',
-        ' Processor: GE Athlon(tm) 16 Processor 10+'
-        ' Memory Testing: '+str(length)+'(Installed:8984)',
-        ' ASN ABN-SLI energy ACPI rev 1011-010',
-        ' '+str(now),
-        ' Temperature: '+str(length)+'°Ra',
-        ' Temperature protection is ON',
-        ' CPU SPEED '+str(length)+'9172 Hz',
-        ' No Audio Chip Found. Onboard Audio Disabled.',
-        ' K987PV-PLUS-PRO',
-        ' RobCo Macrosystems 6e UNABLE-5 10-',
-        ' No Virtual Machine support found.',
-        ' Virus Support [Disabled]',
-        ' NetPreceder(tm) Lettering Test: F Ώ Ж 化け � [FAIL]'
+        ' RobCo-OS v7.6.0.3\n',
+        ' SYSTEM 64k RAM\n',
+        ' NO HOLOTAPE FOUND\n',
+        ' 00b160ff 00064b72 0005aa6c 000a36c0 0007dc12 0007d490 00018471 000b16d3\n',
+        ' load 7a 73 6e 74 6c\n',
+        ' '+str(length)+' BYTES FREE | OK\n',
+        ' 120 POKE 736, ' + str(length) + ' x$=""LH) 6;T\n',
+        ' unable to resolve host TERML-z' + str(length)+'\n',
+        ' Get: 2 14kbps [472 B]\n'
+        ' No UNIVAC tape found. Mounted drive in /mnt/.\n',
+        ' Processor: GE Athlon(tm) 16 Processor 10+\n'
+        ' Memory Testing: '+str(length)+'(Installed:8984)\n',
+        ' ASN ABN-SLI energy ACPI rev 1011-010\n',
+        ' '+str(now)+'\n',
+        ' Temperature: '+str(length)+'°Ra\n',
+        ' Temperature protection is ON\n',
+        ' CPU SPEED '+str(length)+'9172 Hz\n',
+        ' No Audio Chip Found. Onboard Audio Disabled.\n',
+        ' K987PV-PLUS-PRO\n',
+        ' RobCo Macrosystems 6e UNABLE-5 10-\n',
+        ' No Virtual Machine support found.\n',
+        ' Virus Support [Disabled]\n',
+        ' NetPreceder(tm) Lettering Test: F Ώ Ж 化け � [FAIL]\n'
     ]
-    print(' BOOTING SYSTEM.')
+    stdscr.addstr(' BOOTING SYSTEM.\n',curses.color_pair(1))
     time.sleep(1.3)
     t()
-    for q in range(random.randrange(11,22)):
+    for q in range(19):
         item = random.randrange(0, len(startupList))
-        print(startupList[item])
+        stdscr.addstr(startupList[item],curses.color_pair(1))
+        stdscr.refresh()
         startupList.pop(item)
         t()
         t()
+    stdscr.clear()
+    stdscr.refresh()
     length -= 11111
     if length < 10000:
         length = random.randrange(10000, 99999)
     l = str(length)
-    print('\n LOAD ROM('+l[2]+l[1]+l[4]+'): TRSPS MNGR V'+l[0]+l[3]+l[2]+'\n')
+    stdscr.addstr(' LOAD ROM('+l[2]+l[1]+l[4]+'): TRSPS MNGR V'+l[0]+l[3]+l[2]+'\n\n',curses.color_pair(1))
+    stdscr.refresh()
     time.sleep(2.3)
     t()
-    print(' ROBCO INDUSTRIES UNIFIED OPERATING SYSTEM')
+    stdscr.clear()
+    stdscr.refresh()
+    stdscr.addstr(' ROBCO INDUSTRIES UNIFIED OPERATING SYSTEM\n',curses.color_pair(1))
+    stdscr.refresh()
     t()
-    print('   COPYRIGHT 2075-2077 ROBCO INDUSTRIES')
-    print('        '+str(now)+'\n                [Loading]')
+    stdscr.addstr('   COPYRIGHT 2075-2077 ROBCO INDUSTRIES\n',curses.color_pair(1))
+    stdscr.addstr('        '+str(now)+'\n',curses.color_pair(1))
+    stdscr.addstr('\n')
+    stdscr.refresh()
+    stdscr.addstr(3,18,'[',curses.color_pair(1))
+    stdscr.addstr(3,22,']\n',curses.color_pair(1))
     t()
     time.sleep(0.5)
     t()
-    print('   -RobCo Trespasser Management System-')
+    stdscr.addstr('   -RobCo Trespasser Management System-\n',curses.color_pair(1))
+    stdscr.refresh()
     t()
-    onebyone('   ====================================\n')
-    t()
-    print('')
-    t()
-    print()
-    print()
-    t()
+    stdscr.addstr(5,3,'[',curses.color_pair(1))
+    stdscr.addstr(5,38,']',curses.color_pair(1))
+    acc = 4
+    number = 0
+    for x in range(34):
+        stdscr.addch(5,acc,ord('='),curses.color_pair(1))
+        if number < 10:
+            stdscr.addstr(3,19,'0'+str(number)+'%',curses.color_pair(1))
+        else:
+            stdscr.addstr(3,19,str(number)+'%',curses.color_pair(1))
+        
+        stdscr.refresh()
+        acc += 1
+        number += 3
+        t()
+
     t()
     time.sleep(0.8)
 
