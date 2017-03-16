@@ -10,11 +10,12 @@ if int(rows) < 25 or int(columns) < 100:
     input()
     sys.exit()
 
+# initiate curses main
 stdscr = curses.initscr()
-
 
 def main(stdscr):
 
+    # configure curses settings
     curses.start_color()
     curses.noecho()
     curses.cbreak()
@@ -23,6 +24,7 @@ def main(stdscr):
     curses.init_pair(1, curses.COLOR_GREEN, curses.COLOR_BLACK)
     curses.init_pair(2, curses.COLOR_BLACK, curses.COLOR_GREEN)
 
+    # edit window size
     global screen
     screen = stdscr.subwin(25, 100, 0, 0)
     screen.box()
@@ -30,26 +32,25 @@ def main(stdscr):
 
     security.startup(stdscr)
 
-    quit_ = False
+    quit_ = False # main loop
     while not quit_:
-        selector = False
-        secondarySelector= True
-        row = 0
-        selected = False
+        selector = False # primary loop
+        secondarySelector= True # secondary loop
+        row = 0 # internally store what is highlighted
+        selected = False # if return is hit, pass 'row' information to secondary loop
 
         stdscr.clear()
         stdscr.refresh()
         now = datetime.datetime.now()
-        stdscr.move(0,0)
-        stdscr.addstr(0,1,'ROBCO INDUSTRIES UNIFIED OPERATING SYSTEM\n',curses.color_pair(1))
-        stdscr.addstr(1,3,'COPYRIGHT 2075-2077 ROBCO INDUSTRIES\n',curses.color_pair(1))
-        stdscr.addstr(2,8,str(now)+'\n',curses.color_pair(1))
+        stdscr.addstr(0,1,'ROBCO INDUSTRIES UNIFIED OPERATING SYSTEM',curses.color_pair(1))
+        stdscr.addstr(1,3,'COPYRIGHT 2075-2077 ROBCO INDUSTRIES',curses.color_pair(1))
+        stdscr.addstr(2,8,str(now),curses.color_pair(1))
         stdscr.addstr(3,13,'Press Q to Quit',curses.color_pair(1))
-        stdscr.addstr(4,3,'-RobCo Trespasser Management System-\n',curses.color_pair(1))
-        stdscr.addstr(5,2,'[====================================]\n',curses.color_pair(1))
-        stdscr.addstr(6,17,' Easy \n',curses.color_pair(1))
-        stdscr.addstr(7,16,' Medium \n',curses.color_pair(1))
-        stdscr.addstr(8,17,' Hard \n',curses.color_pair(1))
+        stdscr.addstr(4,3,'-RobCo Trespasser Management System-',curses.color_pair(1))
+        stdscr.addstr(5,2,'[====================================]',curses.color_pair(1))
+        stdscr.addstr(6,17,' Easy ',curses.color_pair(1))
+        stdscr.addstr(7,16,' Medium ',curses.color_pair(1))
+        stdscr.addstr(8,17,' Hard ',curses.color_pair(1))
         stdscr.addstr(9,16,' Reboot ',curses.color_pair(1))
         stdscr.move(9,0)
 
@@ -74,20 +75,21 @@ def main(stdscr):
                 if row != 0:
                     selected = True
                 pass
-            #every press but return will move the "cursor"
+
+            
             if selected != True:
-                stdscr.addstr(6,17,' Easy \n',curses.color_pair(1))
-                stdscr.addstr(7,16,' Medium \n',curses.color_pair(1))
-                stdscr.addstr(8,17,' Hard \n',curses.color_pair(1))
+                stdscr.addstr(6,17,' Easy ',curses.color_pair(1))
+                stdscr.addstr(7,16,' Medium ',curses.color_pair(1))
+                stdscr.addstr(8,17,' Hard ',curses.color_pair(1))
                 stdscr.addstr(9,16,' Reboot ',curses.color_pair(1))
                 if row == 1:
-                    stdscr.addstr(6,17,' Easy \n', curses.color_pair(2))
+                    stdscr.addstr(6,17,' Easy ', curses.color_pair(2))
                 elif row == 2:
-                    stdscr.addstr(7,16,' Medium \n', curses.color_pair(2))
+                    stdscr.addstr(7,16,' Medium ', curses.color_pair(2))
                 elif row == 3:
-                    stdscr.addstr(8,17,' Hard \n', curses.color_pair(2))
+                    stdscr.addstr(8,17,' Hard ', curses.color_pair(2))
                 elif row == 4:
-                    stdscr.addstr(9,16,' Reboot \n', curses.color_pair(2))
+                    stdscr.addstr(9,16,' Reboot ', curses.color_pair(2))
             else:
                 if row == 4:
                     rowFour = True
