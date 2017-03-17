@@ -2,6 +2,30 @@ import security
 import curses, time, datetime, os, sys
 from curses import wrapper
 
+def clears(stdscr): # clear and re-box the screen
+    stdscr.clear()
+    screen.box()
+    stdscr.refresh()
+
+def mainwindow(stdscr): # print the main menu window
+    now = datetime.datetime.now()
+    stdscr.addstr(1,30,'ROBCO INDUSTRIES UNIFIED OPERATING SYSTEM',curses.color_pair(1))
+    stdscr.addstr(2,32,'COPYRIGHT 2075-2077 ROBCO INDUSTRIES',curses.color_pair(1))
+    stdscr.addstr(3,37,str(now),curses.color_pair(1))
+    stdscr.addstr(4,44,'Press Q to Quit',curses.color_pair(1))
+    stdscr.addstr(5,32,'-RobCo Trespasser Management System-',curses.color_pair(1))
+    stdscr.addstr(6,32,'[====================================]',curses.color_pair(1))
+    stdscr.addstr(7,48,' Easy ',curses.color_pair(1))
+    stdscr.addstr(8,47,' Medium ',curses.color_pair(1))
+    stdscr.addstr(9,48,' Hard ',curses.color_pair(1))
+    stdscr.addstr(10,47,' Reboot ',curses.color_pair(1))
+    stdscr.addstr(11,46,' Controls ',curses.color_pair(1))
+
+def gameWindow(stdscr):
+    # one function won't cut it, probably make a class
+    pass
+
+# first thing to run, make sure that the terminal window is minimum size or more
 rows, columns = os.popen('stty size', 'r').read().split()
 if int(rows) < 25 or int(columns) < 100:
     print('Your terminal window is: '+rows+' rows by '+columns+' columns')
@@ -10,10 +34,16 @@ if int(rows) < 25 or int(columns) < 100:
     input()
     sys.exit()
 
-# initiate curses main
+# initiate curses scr
 stdscr = curses.initscr()
 
 def main(stdscr):
+    """
+    Main non-function part of the code in a function so that the
+    curses wrapper can prevent a terminal from staying in curses
+    mode in the event of an error.
+    Even ^C would normally bugger the terminal
+    """
 
     # configure curses settings
     curses.start_color()
@@ -24,76 +54,71 @@ def main(stdscr):
     curses.init_pair(1, curses.COLOR_GREEN, curses.COLOR_BLACK)
     curses.init_pair(2, curses.COLOR_BLACK, curses.COLOR_GREEN)
 
-    # edit window size
+    # edit window size and box it
     global screen
     screen = stdscr.subwin(25, 100, 0, 0)
     screen.box()
     screen.refresh()
 
+    """
+    Turn on startup when done testing
     security.startup(stdscr)
+    """
 
     quit_ = False # main loop
     while not quit_:
-        selector = False # primary loop
-        secondarySelector= True # secondary loop
-        row = 0 # internally store what is highlighted
-        selected = False # if return is hit, pass 'row' information to secondary loop
+        selector = False # primary loop (main menu)
+        secondarySelector= True # secondary loop (actual game)
+        row = 0 # internally store what is highlighted on the Y axis
+        colum = 0 # internally store what is highlighted on the X axis
+        selected = False # if return is hit, use row number to pass difficulty
 
-        stdscr.clear()
-        stdscr.refresh()
-        now = datetime.datetime.now()
-        stdscr.addstr(0,1,'ROBCO INDUSTRIES UNIFIED OPERATING SYSTEM',curses.color_pair(1))
-        stdscr.addstr(1,3,'COPYRIGHT 2075-2077 ROBCO INDUSTRIES',curses.color_pair(1))
-        stdscr.addstr(2,8,str(now),curses.color_pair(1))
-        stdscr.addstr(3,13,'Press Q to Quit',curses.color_pair(1))
-        stdscr.addstr(4,3,'-RobCo Trespasser Management System-',curses.color_pair(1))
-        stdscr.addstr(5,2,'[====================================]',curses.color_pair(1))
-        stdscr.addstr(6,17,' Easy ',curses.color_pair(1))
-        stdscr.addstr(7,16,' Medium ',curses.color_pair(1))
-        stdscr.addstr(8,17,' Hard ',curses.color_pair(1))
-        stdscr.addstr(9,16,' Reboot ',curses.color_pair(1))
-        stdscr.move(9,0)
+        clears(stdscr)
+        mainwindow(stdscr)
 
         # main menu selection
         while not selector: 
             rowFour = False
 
             m = stdscr.getch()
-            # 'w' and 's' work "upside down", because w moves up visually and down in row number, and s is vice versa
-            if m == ord('q'):
+            # 'w' and 's' move the selection in their respective arrow keys
+            if m == ord('q'): # quit
                 selector = True
                 quit_ = True
-            elif m == ord('w'):
+            elif m == ord('w') or m == curses.KEY_UP:
                 row = row - 1
                 if row <= 0:
-                    row = 4
-            elif m == ord('s'):
+                    row = 5
+            elif m == ord('s') or m == curses.KEY_DOWN:
                 row = row + 1
-                if row >= 5:
+                if row >= 6:
                     row = 1
-            elif m == curses.KEY_ENTER or m == ord('e'):
+            elif m == curses.KEY_ENTER or m == 10 or m == 13 or m == ord('e'):
                 if row != 0:
                     selected = True
                 pass
 
-            
             if selected != True:
-                stdscr.addstr(6,17,' Easy ',curses.color_pair(1))
-                stdscr.addstr(7,16,' Medium ',curses.color_pair(1))
-                stdscr.addstr(8,17,' Hard ',curses.color_pair(1))
-                stdscr.addstr(9,16,' Reboot ',curses.color_pair(1))
+                mainwindow(stdscr)
                 if row == 1:
-                    stdscr.addstr(6,17,' Easy ', curses.color_pair(2))
+                    stdscr.addstr(7,48,' Easy ', curses.color_pair(2))
                 elif row == 2:
-                    stdscr.addstr(7,16,' Medium ', curses.color_pair(2))
+                    stdscr.addstr(8,47,' Medium ', curses.color_pair(2))
                 elif row == 3:
-                    stdscr.addstr(8,17,' Hard ', curses.color_pair(2))
+                    stdscr.addstr(9,48,' Hard ', curses.color_pair(2))
                 elif row == 4:
-                    stdscr.addstr(9,16,' Reboot ', curses.color_pair(2))
+                    stdscr.addstr(10,47,' Reboot ', curses.color_pair(2))
+                elif row == 5:
+                    stdscr.addstr(11,46,' Controls ',curses.color_pair(2))
+
             else:
                 if row == 4:
                     rowFour = True
                     selected = False
+                elif row == 5:
+                    """
+                    FIND THIS AND ADD CONTROLS SCREEN
+                    """
                 elif row == 1:
                     difficulty = security.wordGetter('easy')
                 elif row == 2:
@@ -105,21 +130,21 @@ def main(stdscr):
                     difficulty = security.initrand(difficulty) # get a new dictionary of 5 words instead of 13
                     selector = True
                     secondarySelector = False
-                    print(difficulty[0]+' '+difficulty[1]+' '+difficulty[2]+' '+difficulty[3]+' '+difficulty[4])
                     time.sleep(1)
                 else:
-                    print(chr(27) + "[2J")
-                    time.sleep(2)
+                    clears(stdscr)
+                    time.sleep(1)
                     security.t()
-                    security.startup()
+                    security.startup(stdscr)
+                    mainwindow(stdscr)
                     rowFour = False
 
         while not secondarySelector: 
 
-            stdscr.clear
+            clears(stdscr)
 
             m = stdscr.getch()
-            if m == 'q':
+            if m == ord('q'):
                 secondarySelector = True
             elif m == 'w':
                 print('up')
