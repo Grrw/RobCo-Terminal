@@ -102,6 +102,14 @@ def startup(stdscr):
     t()
     time.sleep(0.8)
 
+def showcontrols(stdscr, onoff):
+    controlsmenu = stdscr.subwin(11, 26, 12, 1)
+    if onoff == True:
+        controlsmenu.box()
+        controlsmenu.addstr(1,9,'CONTROLS',curses.color_pair(1))
+    else:
+        controlsmenu.clear()
+
 def wordGetter(level):
     """
     Gets words from a list, returning them
@@ -128,15 +136,3 @@ def initrand(user_list):
         t()
         time.sleep(0.2)
     return startupList
-
-
-
-def minigamePrint(row, words, val_dict):
-    if row == 1:
-        pass
-
-    elif row == 2:
-        pass
-    
-    elif row == 3:
-        pass
