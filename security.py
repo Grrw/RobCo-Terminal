@@ -1,7 +1,7 @@
 import random, json, time, datetime, curses
 
 def t():
-    length = random.gauss(0.2,0.08)
+    length = random.gauss(0.15,0.08)
     time.sleep(max(0, length))
 
 def startup(stdscr):
@@ -10,8 +10,6 @@ def startup(stdscr):
     length = random.randrange(30021, 68904, 7)
     stdscr.clear()
     stdscr.refresh()
-
-# 2017-03-14 21:17:58.472589
 
     screen = stdscr.subwin(25, 100, 0, 0)
     screen.box()
@@ -126,11 +124,9 @@ def initrand(user_list):
     for x in range(5):
         popper = random.randrange(0, len(user_list))
         startupList.append(user_list[popper])
-        print(user_list[popper])
         user_list.pop(popper)
         t()
         time.sleep(0.2)
-    print(chr(27) + "[2J")
     return startupList
 
 
