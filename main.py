@@ -14,7 +14,7 @@ def mainwindow(stdscr): # print the main menu window
     stdscr.addstr(3,37,str(now),curses.color_pair(1))
     stdscr.addstr(4,44,'Press Q to Quit',curses.color_pair(1))
     stdscr.addstr(5,32,'-RobCo Trespasser Management System-',curses.color_pair(1))
-    stdscr.addstr(6,32,'[====================================]',curses.color_pair(1))
+    stdscr.addstr(6,32,'[===================================]',curses.color_pair(1))
     stdscr.addstr(7,48,' Easy ',curses.color_pair(1))
     stdscr.addstr(8,47,' Medium ',curses.color_pair(1))
     stdscr.addstr(9,48,' Hard ',curses.color_pair(1))
@@ -72,6 +72,10 @@ def main(stdscr):
         row = 0 # internally store what is highlighted on the Y axis
         colum = 0 # internally store what is highlighted on the X axis
         selected = False # if return is hit, use row number to pass difficulty
+        skipper = False # used for skipping the difficulty selection in primary loop
+        # row'x' is used to decide which non-difficulty option the user selected
+        rowFour = False # reboot
+        rowFive = True # controls
 
         clears(stdscr)
         mainwindow(stdscr)
@@ -79,6 +83,9 @@ def main(stdscr):
         # main menu selection
         while not selector: 
             rowFour = False
+            selected = False
+
+            security.showcontrols(stdscr, rowFive)
 
             m = stdscr.getch()
             # 'w' and 's' move the selection in their respective arrow keys
@@ -114,30 +121,36 @@ def main(stdscr):
             else:
                 if row == 4:
                     rowFour = True
-                    selected = False
+                    skipper = True
                 elif row == 5:
-                    """
-                    FIND THIS AND ADD CONTROLS SCREEN
-                    """
-                elif row == 1:
+                    # switch rowFive to allow toggling of the controls
+                    if rowFive == False:
+                        rowFive = True
+                    elif rowFive == True:
+                        rowFive = False
+                    skipper = True
+                else:
+                    rowFour == False
+                if row == 1:
                     difficulty = security.wordGetter('easy')
                 elif row == 2:
                     difficulty = security.wordGetter('medium')
                 elif row == 3:
                     difficulty = security.wordGetter('hard')
 
-                if rowFour == False:
+                if skipper == False:
                     difficulty = security.initrand(difficulty) # get a new dictionary of 5 words instead of 13
                     selector = True
                     secondarySelector = False
                     time.sleep(1)
-                else:
+                elif rowFour == True:
                     clears(stdscr)
                     time.sleep(1)
                     security.t()
                     security.startup(stdscr)
                     mainwindow(stdscr)
-                    rowFour = False
+                else:
+                    pass
 
         while not secondarySelector: 
 
