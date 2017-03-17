@@ -68,34 +68,34 @@ def startup(stdscr):
     stdscr.clear()
     screen.box()
     stdscr.refresh()
-    stdscr.addstr(1,30,'ROBCO INDUSTRIES UNIFIED OPERATING SYSTEM',curses.color_pair(1))
+    stdscr.addstr(1,29,'ROBCO INDUSTRIES UNIFIED OPERATING SYSTEM',curses.color_pair(1))
     stdscr.refresh()
     t()
-    stdscr.addstr(2,32,'COPYRIGHT 2075-2077 ROBCO INDUSTRIES',curses.color_pair(1))
+    stdscr.addstr(2,31,'COPYRIGHT 2075-2077 ROBCO INDUSTRIES',curses.color_pair(1))
     stdscr.addstr(3,37,str(now),curses.color_pair(1))
     stdscr.refresh()
-    stdscr.addstr(4,47,'[',curses.color_pair(1))
-    stdscr.addstr(4,51,']',curses.color_pair(1))
+    stdscr.addstr(4,46,'[',curses.color_pair(1))
+    stdscr.addstr(4,50,']',curses.color_pair(1))
     t()
     time.sleep(0.5)
     t()
-    stdscr.addstr(5,32,'-RobCo Trespasser Management System-',curses.color_pair(1))
+    stdscr.addstr(5,31,'-RobCo Trespasser Management System-',curses.color_pair(1))
     stdscr.refresh()
     t()
-    stdscr.addstr(6,32,'[',curses.color_pair(1))
-    stdscr.addstr(6,68,']',curses.color_pair(1))
-    acc = 33
+    stdscr.addstr(6,31,'[',curses.color_pair(1))
+    stdscr.addstr(6,67,']',curses.color_pair(1))
+    acc = 32
     number = 0
     for x in range(35):
         stdscr.addch(6,acc,ord('='),curses.color_pair(1))
         if number < 10:
-            stdscr.addstr(4,48,'0'+str(number)+'%',curses.color_pair(1))
+            stdscr.addstr(4,47,'0'+str(number)+'%',curses.color_pair(1))
         else:
-            stdscr.addstr(4,48,str(number)+'%',curses.color_pair(1))
+            stdscr.addstr(4,47,str(number)+'%',curses.color_pair(1))
         
         stdscr.refresh()
         acc += 1
-        if acc < 67:
+        if acc < 66:
             number += 3
         t()
 
@@ -103,12 +103,33 @@ def startup(stdscr):
     time.sleep(0.8)
 
 def showcontrols(stdscr, onoff):
-    controlsmenu = stdscr.subwin(11, 26, 12, 1)
+    controlsmenu = stdscr.subwin(8, 74, 15, 2)
+    controlslist = stdscr.subwin(9, 22, 14, 76)
     if onoff == True:
         controlsmenu.box()
-        controlsmenu.addstr(1,9,'CONTROLS',curses.color_pair(1))
+        controlsmenu.addstr(1,1,'esc  f1 f2 f3 f4 f5 f6 f7 f8 f9 f10 f11 f12   psc srl psb',curses.color_pair(1))
+        controlsmenu.addstr(2,1,' ~   1  2  3  4  5  6  7  8  9  0 -  = bksp   ins hom pup   nlk /  *  -',curses.color_pair(1))
+        controlsmenu.addstr(3,1,' TAB  q  w  e  r  t  y  u  i  o  p  [ ]  \\    del end pdn    7  8  9  +',curses.color_pair(1))
+        controlsmenu.addstr(4,1,'CAPLK  a  s  d  f  g  h  j  k  l  ;  \' RET                  4  5  6',curses.color_pair(1))
+        controlsmenu.addstr(5,1,'SHIFT  z  x  c  v  b  n  m  ,  .   /  SHIFT        ^         1  2  3 ent',curses.color_pair(1))
+        controlsmenu.addstr(6,1,'ctrl win alt |   space    | alt win pn ctrl     <  V  >      0 ins del',curses.color_pair(1))
+        controlsmenu.addstr(3,6,' q  w  e ',curses.color_pair(2))
+        controlsmenu.addstr(4,7,' a  s  d ',curses.color_pair(2))
+        controlsmenu.addstr(4,40, ' RET ',curses.color_pair(2))
+        controlsmenu.addstr(5,51,' ^ ',curses.color_pair(2))
+        controlsmenu.addstr(6,48,' <  V  > ',curses.color_pair(2))
+        controlslist.box()
+        controlslist.addstr(1,6,' CONTROLS ',curses.color_pair(2))
+        controlslist.addstr(2,2,'w or ^ ........ up',curses.color_pair(1))
+        controlslist.addstr(3,2,'s or V ...... down',curses.color_pair(1))
+        controlslist.addstr(4,2,'a or < ...... left',curses.color_pair(1))
+        controlslist.addstr(5,2,'d or > ..... right',curses.color_pair(1))
+        controlslist.addstr(6,2,'e or RET .. select',curses.color_pair(1))
+        controlslist.addstr(7,2,'q ........... quit',curses.color_pair(1))
     else:
         controlsmenu.clear()
+        controlslist.clear()
+    return False
 
 def wordGetter(level):
     """

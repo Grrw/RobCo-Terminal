@@ -9,17 +9,17 @@ def clears(stdscr): # clear and re-box the screen
 
 def mainwindow(stdscr): # print the main menu window
     now = datetime.datetime.now()
-    stdscr.addstr(1,30,'ROBCO INDUSTRIES UNIFIED OPERATING SYSTEM',curses.color_pair(1))
-    stdscr.addstr(2,32,'COPYRIGHT 2075-2077 ROBCO INDUSTRIES',curses.color_pair(1))
+    stdscr.addstr(1,29,'ROBCO INDUSTRIES UNIFIED OPERATING SYSTEM',curses.color_pair(1))
+    stdscr.addstr(2,31,'COPYRIGHT 2075-2077 ROBCO INDUSTRIES',curses.color_pair(1))
     stdscr.addstr(3,37,str(now),curses.color_pair(1))
-    stdscr.addstr(4,44,'Press Q to Quit',curses.color_pair(1))
-    stdscr.addstr(5,32,'-RobCo Trespasser Management System-',curses.color_pair(1))
-    stdscr.addstr(6,32,'[===================================]',curses.color_pair(1))
-    stdscr.addstr(7,48,' Easy ',curses.color_pair(1))
-    stdscr.addstr(8,47,' Medium ',curses.color_pair(1))
-    stdscr.addstr(9,48,' Hard ',curses.color_pair(1))
-    stdscr.addstr(10,47,' Reboot ',curses.color_pair(1))
-    stdscr.addstr(11,46,' Controls ',curses.color_pair(1))
+    stdscr.addstr(4,42,'Press Q to Quit',curses.color_pair(1))
+    stdscr.addstr(5,31,'-RobCo Trespasser Management System-',curses.color_pair(1))
+    stdscr.addstr(6,31,'[===================================]',curses.color_pair(1))
+    stdscr.addstr(7,47,' Easy ',curses.color_pair(1))
+    stdscr.addstr(8,46,' Medium ',curses.color_pair(1))
+    stdscr.addstr(9,47,' Hard ',curses.color_pair(1))
+    stdscr.addstr(10,46,' Reboot ',curses.color_pair(1))
+    stdscr.addstr(11,45,' Controls ',curses.color_pair(1))
 
 def gameWindow(stdscr):
     # one function won't cut it, probably make a class
@@ -85,7 +85,8 @@ def main(stdscr):
             rowFour = False
             selected = False
 
-            security.showcontrols(stdscr, rowFive)
+            skipper = security.showcontrols(stdscr, rowFive)
+            # showcontrols always returns False
 
             m = stdscr.getch()
             # 'w' and 's' move the selection in their respective arrow keys
@@ -108,15 +109,15 @@ def main(stdscr):
             if selected != True:
                 mainwindow(stdscr)
                 if row == 1:
-                    stdscr.addstr(7,48,' Easy ', curses.color_pair(2))
+                    stdscr.addstr(7,47,' Easy ', curses.color_pair(2))
                 elif row == 2:
-                    stdscr.addstr(8,47,' Medium ', curses.color_pair(2))
+                    stdscr.addstr(8,46,' Medium ', curses.color_pair(2))
                 elif row == 3:
-                    stdscr.addstr(9,48,' Hard ', curses.color_pair(2))
+                    stdscr.addstr(9,47,' Hard ', curses.color_pair(2))
                 elif row == 4:
-                    stdscr.addstr(10,47,' Reboot ', curses.color_pair(2))
+                    stdscr.addstr(10,46,' Reboot ', curses.color_pair(2))
                 elif row == 5:
-                    stdscr.addstr(11,46,' Controls ',curses.color_pair(2))
+                    stdscr.addstr(11,45,' Controls ',curses.color_pair(2))
 
             else:
                 if row == 4:
