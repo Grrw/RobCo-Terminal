@@ -1,3 +1,9 @@
+"""
+Main Window Size: 25 rows by 100 columns
+'Keyboard' Window Size: 8, 74, 15, 2
+'Controls' Windoe Size: 9, 22, 14, 76
+"""
+
 import security
 import curses, time, datetime, os, sys
 from curses import wrapper
@@ -54,7 +60,7 @@ def main(stdscr):
     curses.init_pair(1, curses.COLOR_GREEN, curses.COLOR_BLACK)
     curses.init_pair(2, curses.COLOR_BLACK, curses.COLOR_GREEN)
 
-    # edit window size and box it
+    # edit make a box 
     global screen
     screen = stdscr.subwin(25, 100, 0, 0)
     screen.box()
@@ -143,11 +149,11 @@ def main(stdscr):
                     difficulty = security.initrand(difficulty) # get a new dictionary of 5 words instead of 13
                     selector = True
                     secondarySelector = False
-                    time.sleep(1)
                 elif rowFour == True:
                     clears(stdscr)
                     time.sleep(1)
                     security.t()
+                    rowFive = True
                     security.startup(stdscr)
                     mainwindow(stdscr)
                 else:
