@@ -4,7 +4,7 @@ Main Window Size: 25 rows by 100 columns
 'Controls' Windoe Size: 9, 22, 14, 76
 """
 
-import security
+import security, game
 import curses, time, datetime, os, sys
 from curses import wrapper
 
@@ -26,10 +26,6 @@ def mainwindow(stdscr): # print the main menu window
     stdscr.addstr(9,47,' Hard ',curses.color_pair(1))
     stdscr.addstr(10,46,' Reboot ',curses.color_pair(1))
     stdscr.addstr(11,45,' Controls ',curses.color_pair(1))
-
-def gameWindow(stdscr):
-    # one function won't cut it, probably make a class
-    pass
 
 # first thing to run, make sure that the terminal window is minimum size or more
 rows, columns = os.popen('stty size', 'r').read().split()
@@ -78,7 +74,6 @@ def main(stdscr):
         row = 0 # internally store what is highlighted on the Y axis
         colum = 0 # internally store what is highlighted on the X axis
         selected = False # if return is hit, use row number to pass difficulty
-        skipper = False # used for skipping the difficulty selection in primary loop
         # row'x' is used to decide which non-difficulty option the user selected
         rowFour = False # reboot
         rowFive = True # controls
@@ -91,7 +86,7 @@ def main(stdscr):
             rowFour = False
             selected = False
 
-            skipper = security.showcontrols(stdscr, rowFive)
+            security.showcontrols(stdscr, rowFive)
             # showcontrols always returns False
 
             m = stdscr.getch()
@@ -128,28 +123,22 @@ def main(stdscr):
             else:
                 if row == 4:
                     rowFour = True
-                    skipper = True
                 elif row == 5:
                     # switch rowFive to allow toggling of the controls
                     if rowFive == False:
                         rowFive = True
                     elif rowFive == True:
                         rowFive = False
-                    skipper = True
                 else:
                     rowFour == False
                 if row == 1:
-                    difficulty = security.wordGetter('easy')
+                    game.game('easy')
                 elif row == 2:
-                    difficulty = security.wordGetter('medium')
+                    game.game('medium')
                 elif row == 3:
-                    difficulty = security.wordGetter('hard')
+                    game.game('hard')
 
-                if skipper == False:
-                    difficulty = security.initrand(difficulty) # get a new dictionary of 5 words instead of 13
-                    selector = True
-                    secondarySelector = False
-                elif rowFour == True:
+                if rowFour == True:
                     clears(stdscr)
                     time.sleep(1)
                     security.t()
@@ -159,23 +148,23 @@ def main(stdscr):
                 else:
                     pass
 
-        while not secondarySelector: 
+        # while not secondarySelector: 
 
-            clears(stdscr)
+        #     clears(stdscr)
 
-            m = stdscr.getch()
-            if m == ord('q'):
-                secondarySelector = True
-            elif m == 'w':
-                print('up')
-            elif m == 's':
-                print('down')
-            elif m == 'a':
-                print('left')
-            elif m == 'd':
-                print('right')
-            elif m == '\n':
-                print('return')
+        #     m = stdscr.getch()
+        #     if m == ord('q'):
+        #         secondarySelector = True
+        #     elif m == 'w':
+        #         print('up')
+        #     elif m == 's':
+        #         print('down')
+        #     elif m == 'a':
+        #         print('left')
+        #     elif m == 'd':
+        #         print('right')
+        #     elif m == '\n':
+        #         print('return')
 
     curses.nocbreak()
     stdscr.keypad(False)
