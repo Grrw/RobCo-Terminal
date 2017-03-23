@@ -32,4 +32,10 @@ def game(difficulty):
 
     diffList = wordGetter()
     diffList = initrand(diffList)
-    print(diffList)
+    
+    if level == 'easy':
+        pass
+    elif level == 'medium':
+        pass
+    elif level == 'hard':
+        pass
