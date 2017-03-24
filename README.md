@@ -7,6 +7,18 @@
 - [X] Display controls
 - [ ] Create the game
 
+### Windows:
+- Tested on Windows 10, Python 3.5
+- Curses needs to be from a wheel
+- If you get errors with git bash, try:
+```shell
+alias python='winpty python.exe'
+```
+
+### Mac:
+- Tested on macOS 10.12
+- Curses pre-installed
+
 ### Window Goals:
 - Main Menu:
 ```
