@@ -1,7 +1,7 @@
 """
-Main Window Size: 25 rows by 100 columns
+Main Window Size: 25 rows by 80 columns
 'Keyboard' Window Size: 8, 74, 15, 2
-'Controls' Windoe Size: 9, 22, 14, 76
+'Controls' Window Size: 9, 22, 14, 76
 """
 
 import security, game
@@ -15,23 +15,23 @@ def clears(stdscr): # clear and re-box the screen
 
 def mainwindow(stdscr): # print the main menu window
     now = datetime.datetime.now()
-    stdscr.addstr(1,29,'ROBCO INDUSTRIES UNIFIED OPERATING SYSTEM',curses.color_pair(1))
-    stdscr.addstr(2,31,'COPYRIGHT 2075-2077 ROBCO INDUSTRIES',curses.color_pair(1))
-    stdscr.addstr(3,37,str(now),curses.color_pair(1))
-    stdscr.addstr(4,42,'Press Q to Quit',curses.color_pair(1))
-    stdscr.addstr(5,31,'-RobCo Trespasser Management System-',curses.color_pair(1))
-    stdscr.addstr(6,31,'[===================================]',curses.color_pair(1))
-    stdscr.addstr(7,47,' Easy ',curses.color_pair(1))
-    stdscr.addstr(8,46,' Medium ',curses.color_pair(1))
-    stdscr.addstr(9,47,' Hard ',curses.color_pair(1))
-    stdscr.addstr(10,46,' Reboot ',curses.color_pair(1))
-    stdscr.addstr(11,45,' Controls ',curses.color_pair(1))
+    stdscr.addstr(1,20,'ROBCO INDUSTRIES UNIFIED OPERATING SYSTEM',curses.color_pair(1))
+    stdscr.addstr(2,22,'COPYRIGHT 2075-2077 ROBCO INDUSTRIES',curses.color_pair(1))
+    stdscr.addstr(3,28,str(now),curses.color_pair(1))
+    stdscr.addstr(4,33,'Press Q to Quit',curses.color_pair(1))
+    stdscr.addstr(5,22,'-RobCo Trespasser Management System-',curses.color_pair(1))
+    stdscr.addstr(6,22,'[==================================]',curses.color_pair(1))
+    stdscr.addstr(7,38,' Easy ',curses.color_pair(1))
+    stdscr.addstr(8,37,' Medium ',curses.color_pair(1))
+    stdscr.addstr(9,38,' Hard ',curses.color_pair(1))
+    stdscr.addstr(10,37,' Reboot ',curses.color_pair(1))
+    stdscr.addstr(11,36,' Controls ',curses.color_pair(1))
 
 # first thing to run, make sure that the terminal window is minimum size or more
 rows, columns = os.popen('stty size', 'r').read().split()
-if int(rows) < 25 or int(columns) < 100:
+if int(rows) < 25 or int(columns) < 80:
     print('Your terminal window is: '+rows+' rows by '+columns+' columns')
-    print('Please resize to greater than 25 rows by 100 columns')
+    print('Please resize to greater than 25 rows by 80 columns')
     print('Press Return to continue')
     input()
     sys.exit()
@@ -58,14 +58,12 @@ def main(stdscr):
 
     # edit make a box 
     global screen
-    screen = stdscr.subwin(25, 100, 0, 0)
+    screen = stdscr.subwin(25, 80, 0, 0)
     screen.box()
     screen.refresh()
 
-    """
-    Turn on startup when done testing
-    security.startup(stdscr)
-    """
+    # Turn on startup when done testing
+    # security.startup(stdscr)
 
     quit_ = False # main loop
     while not quit_:
@@ -79,10 +77,11 @@ def main(stdscr):
         rowFive = True # controls
 
         clears(stdscr)
+        security.noise('poweron')
         mainwindow(stdscr)
 
         # main menu selection
-        while not selector: 
+        while not selector:
             rowFour = False
             selected = False
 
@@ -91,34 +90,40 @@ def main(stdscr):
 
             m = stdscr.getch()
             # 'w' and 's' move the selection in their respective arrow keys
-            if m == ord('q'): # quit
+            if m == ord('q') or m == ord('Q'): # quit
                 selector = True
+                stdscr.clear()
+                security.noise('poweroff')
+                stdscr.refresh()
+                time.sleep(0.5)
                 quit_ = True
-            elif m == ord('w') or m == curses.KEY_UP:
+            elif m == ord('w') or m == ord('W') or m == curses.KEY_UP:
                 row = row - 1
                 if row <= 0:
                     row = 5
-            elif m == ord('s') or m == curses.KEY_DOWN:
+            elif m == ord('s') or m == ord('S') or m == curses.KEY_DOWN:
                 row = row + 1
                 if row >= 6:
                     row = 1
             elif m == curses.KEY_ENTER or m == 10 or m == 13 or m == ord('e'):
                 if row != 0:
+                    security.noise('select')
                     selected = True
                 pass
 
             if selected != True:
                 mainwindow(stdscr)
+                security.noise('keys')
                 if row == 1:
-                    stdscr.addstr(7,47,' Easy ', curses.color_pair(2))
+                    stdscr.addstr(7,38,' Easy ', curses.color_pair(2))
                 elif row == 2:
-                    stdscr.addstr(8,46,' Medium ', curses.color_pair(2))
+                    stdscr.addstr(8,37,' Medium ', curses.color_pair(2))
                 elif row == 3:
-                    stdscr.addstr(9,47,' Hard ', curses.color_pair(2))
+                    stdscr.addstr(9,38,' Hard ', curses.color_pair(2))
                 elif row == 4:
-                    stdscr.addstr(10,46,' Reboot ', curses.color_pair(2))
+                    stdscr.addstr(10,37,' Reboot ', curses.color_pair(2))
                 elif row == 5:
-                    stdscr.addstr(11,45,' Controls ',curses.color_pair(2))
+                    stdscr.addstr(11,36,' Controls ',curses.color_pair(2))
 
             else:
                 if row == 4:
