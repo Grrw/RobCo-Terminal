@@ -9,7 +9,7 @@
 - [X] &nbsp;&nbsp;&nbsp;&nbsp; > Pygame is optional
 - [ ] Create the game
 
-### OS Compatibility:
+### OS Compatibility: <sub><sup>For all OS, pygame is optional</sup></sub>
 #### Windows:
 - Tested on Windows 10, Python 3.4, CMD (Linux on Windows)
 #### Mac:
