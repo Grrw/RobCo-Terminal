@@ -144,9 +144,10 @@ def main(stdscr):
                     game.game('hard')
 
                 if rowFour == True:
-                    clears(stdscr)
-                    time.sleep(1)
-                    security.t()
+                    stdscr.clear()
+                    security.noise('poweroff')
+                    stdscr.refresh()
+                    time.sleep(1.3)
                     rowFive = True
                     security.startup(stdscr)
                     mainwindow(stdscr)
