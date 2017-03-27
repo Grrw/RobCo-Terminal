@@ -1,23 +1,28 @@
-import random, json, time, datetime, curses, pygame
+import random, json, time, datetime, curses
 
 def noise(kind):
-    pygame.mixer.init()
-    if kind == 'poweron':
-        song = pygame.mixer.Sound("audio/poweron.ogg")
-        pygame.mixer.Sound.play(song)
-        time.sleep(0.7)
-    elif kind == 'poweroff':
-        song = pygame.mixer.Sound("audio/poweroff.ogg")
-        pygame.mixer.Sound.play(song)
-        time.sleep(0.3)
-    elif kind == "keys":
-        noise = random.randint(1, 9)
-        key = 'audio/' + str(noise) + '.ogg'
-        song = pygame.mixer.Sound(key)
-        pygame.mixer.Sound.play(song)
-    elif kind == 'select':
-        song = pygame.mixer.Sound("audio/select.ogg")
-        pygame.mixer.Sound.play(song)
+    try:
+        import pygame
+        pygame.mixer.init()
+        if kind == 'poweron':
+            song = pygame.mixer.Sound("audio/poweron.ogg")
+            pygame.mixer.Sound.play(song)
+            time.sleep(0.7)
+        elif kind == 'poweroff':
+            song = pygame.mixer.Sound("audio/poweroff.ogg")
+            pygame.mixer.Sound.play(song)
+            time.sleep(0.3)
+        elif kind == "keys":
+            noise = random.randint(1, 9)
+            key = 'audio/' + str(noise) + '.ogg'
+            song = pygame.mixer.Sound(key)
+            pygame.mixer.Sound.play(song)
+        elif kind == 'select':
+            song = pygame.mixer.Sound("audio/select.ogg")
+            pygame.mixer.Sound.play(song)
+    except:
+        f = open('noaudio.txt', 'w+')
+        f.write('Pygame not installed')
 
 def t():
     length = random.gauss(0.15,0.08)
