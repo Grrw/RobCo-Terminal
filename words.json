@@ -1,25 +1,71 @@
 {
     "Easy": [
-        "jumps",
-        "spice",
-        "jonny",
-        "pipes",
-        "spike",
-        "close",
-        "field",
-        "major",
-        "robco",
-        "snake",
-        "plate",
-        "light",
-        "table"
+        [
+            "jumps",
+            "jenny",
+            "pipes"
+        ],
+        [
+            "spike",
+            "snake",
+            "table"
+        ],
+        [
+            "fried",
+            "field",
+            "light"
+        ],
+        [
+            "shoes",
+            "bikes",
+            "ruses"
+        ]
     ],
 
     "Medium": [
-        "7 letter words"
+        [
+            "1st",
+            "1st",
+            "1st"
+        ],
+        [
+            "2nd",
+            "2nd",
+            "2nd"
+        ],
+        [
+            "3rd",
+            "3rd",
+            "3rd"
+        ],
+        [
+            "4th",
+            "4th",
+            "4th"
+        ]
+
     ],
 
     "Hard": [
-        "9 letter words"
+        [
+            "HARD WORD",
+            "HARD WORD",
+            "HARD WORD"
+        ],
+        [
+            "Guess Me!",
+            "Guess Me!",
+            "Guess Me!"
+        ],
+        [
+            "Difficult",
+            "Difficult",
+            "Difficult"
+        ],
+        [
+            "88888888",
+            "88888888",
+            "88888888"
+        ]
     ]
 }
