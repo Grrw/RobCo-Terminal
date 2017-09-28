@@ -26,6 +26,7 @@ def mainwindow(stdscr): # print the main menu window
     stdscr.addstr(9,38,' Hard ',curses.color_pair(1))
     stdscr.addstr(10,37,' Reboot ',curses.color_pair(1))
     stdscr.addstr(11,36,' Controls ',curses.color_pair(1))
+    stdscr.addstr(12,38,' Quit ',curses.color_pair(1))
 
 # first thing to run, make sure that the terminal window is minimum size or more
 rows, columns = os.popen('stty size', 'r').read().split()
@@ -62,8 +63,8 @@ def main(stdscr):
     screen.box()
     screen.refresh()
 
-    # Turn on startup when done testing
-    # security.startup(stdscr)
+    """ Turn on startup when done testing """
+    security.startup(stdscr)
 
     quit_ = False # main loop
     while not quit_:
@@ -73,22 +74,25 @@ def main(stdscr):
         colum = 0 # internally store what is highlighted on the X axis
         selected = False # if return is hit, use row number to pass difficulty
         # row'x' is used to decide which non-difficulty option the user selected
-        rowFour = False # reboot
-        rowFive = True # controls
+        rowFour = False # to prevent loops
+        rowFive = False # controls
+        quikQuit = False # lazy way to quit but who cares
 
         clears(stdscr)
-        security.noise('poweron')
+        # security.noise('poweron')
         mainwindow(stdscr)
 
         # main menu selection
         while not selector:
-            rowFour = False
             selected = False
 
             security.showcontrols(stdscr, rowFive)
             # showcontrols always returns False
 
-            m = stdscr.getch()
+            if quikQuit == True:
+                m = ord('q')
+            else:
+                m = stdscr.getch()
             # 'w' and 's' move the selection in their respective arrow keys
             if m == ord('q') or m == ord('Q'): # quit
                 selector = True
@@ -100,10 +104,10 @@ def main(stdscr):
             elif m == ord('w') or m == ord('W') or m == curses.KEY_UP:
                 row = row - 1
                 if row <= 0:
-                    row = 5
+                    row = 6
             elif m == ord('s') or m == ord('S') or m == curses.KEY_DOWN:
                 row = row + 1
-                if row >= 6:
+                if row >= 7:
                     row = 1
             elif m == curses.KEY_ENTER or m == 10 or m == 13 or m == ord('e'):
                 if row != 0:
@@ -124,33 +128,37 @@ def main(stdscr):
                     stdscr.addstr(10,37,' Reboot ', curses.color_pair(2))
                 elif row == 5:
                     stdscr.addstr(11,36,' Controls ',curses.color_pair(2))
+                elif row == 6:
+                    stdscr.addstr(12,38,' Quit ',curses.color_pair(2))
 
             else:
-                if row == 4:
+                if row == 1:
+                    game.game(stdscr, 'easy')
+                elif row == 2:
+                    game.game(stdscr, 'medium')
+                elif row == 3:
+                    game.game(stdscr, 'hard')
+                elif row == 4:
                     rowFour = True
+                    if rowFour == True:
+                        stdscr.clear()
+                        security.noise('poweroff')
+                        stdscr.refresh()
+                        time.sleep(1.3)
+                        rowFive = False
+                        security.startup(stdscr)
+                        mainwindow(stdscr)
+                        rowFour = False
+                        row = 0
+                        colum = 0
                 elif row == 5:
                     # switch rowFive to allow toggling of the controls
                     if rowFive == False:
                         rowFive = True
                     elif rowFive == True:
                         rowFive = False
-                else:
-                    rowFour == False
-                if row == 1:
-                    game.game('easy')
-                elif row == 2:
-                    game.game('medium')
-                elif row == 3:
-                    game.game('hard')
-
-                if rowFour == True:
-                    stdscr.clear()
-                    security.noise('poweroff')
-                    stdscr.refresh()
-                    time.sleep(1.3)
-                    rowFive = True
-                    security.startup(stdscr)
-                    mainwindow(stdscr)
+                elif row == 6:
+                    quikQuit = True
                 else:
                     pass
 
