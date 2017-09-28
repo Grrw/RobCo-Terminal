@@ -8,18 +8,23 @@ def noise(kind):
             song = pygame.mixer.Sound("audio/poweron.ogg")
             pygame.mixer.Sound.play(song)
             time.sleep(0.7)
+            return
         elif kind == 'poweroff':
             song = pygame.mixer.Sound("audio/poweroff.ogg")
             pygame.mixer.Sound.play(song)
             time.sleep(0.3)
+            return
         elif kind == "keys":
             noise = random.randint(1, 9)
             key = 'audio/' + str(noise) + '.ogg'
             song = pygame.mixer.Sound(key)
-            pygame.mixer.Sound.play(song)
         elif kind == 'select':
             song = pygame.mixer.Sound("audio/select.ogg")
-            pygame.mixer.Sound.play(song)
+        elif kind == 'boot':
+            song = pygame.mixer.Sound('audio/boot.ogg')
+        elif kind == 'hgboot':
+            song = pygame.mixer.Sound("audio/hgboot.ogg")
+        pygame.mixer.Sound.play(song)
     except:
         f = open('noaudio.txt', 'w+')
         f.write('Pygame not installed')
@@ -31,21 +36,13 @@ def t():
 def startup(stdscr):
     now = datetime.datetime.now()
     length = random.randrange(30021, 68904, 7)
-
-    stdscr.clear()
-    screen = stdscr.subwin(25, 80, 0, 0)
-    screen.box()
-    screen.refresh()
-
-    stdscr.addstr(1,21,'**** ROBCO TERMLINK UPLINK SYSTEM ****',curses.color_pair(1))
-    stdscr.refresh()
     startupList = [
         'RobCo-OS v7.6.0.3',
         'SYSTEM 64k RAM',
         'NO HOLOTAPE FOUND',
         '00b160ff 00064b72 0005aa6c 000a36c0 0007dc12 0007d490',
         'load 7a 73 6e 74 6c',
-         str(length)+' BYTES FREE | OK',
+        str(length)+' BYTES FREE | OK',
         '120 POKE 736, ' + str(length) + ' x$=""LH) 6;T',
         'unable to resolve host TERML-z' + str(length)+'',
         'Get: 2 14kbps [472 B]'
@@ -53,7 +50,7 @@ def startup(stdscr):
         'Processor: GE Athlon(tm) 16 Processor 10+'
         'Memory Testing: '+str(length)+' B (8984 B)',
         'ASN ABN-SLI energy ACPI rev 1011-010',
-         str(now)+'',
+        str(now)+'',
         'Temperature: '+str(length)+'°Ra',
         'Temperature protection is ON',
         'CPU SPEED '+str(length)+'9172 Hz',
@@ -64,6 +61,20 @@ def startup(stdscr):
         'Virus Support [Disabled]',
         'NetPreceder(tm) Lettering Test: F Ώ Ж 化け � [FAIL]'
     ]
+
+    stdscr.clear()
+    screen = stdscr.subwin(25, 80, 0, 0)
+    screen.box()
+    screen.refresh()
+
+    # 1/2 of the time, plays the h2g2 sound 
+    if random.randint(0,1) == 0:
+        noise('hgboot')
+    noise('boot')
+
+    stdscr.addstr(1,21,'**** ROBCO TERMLINK UPLINK SYSTEM ****',curses.color_pair(1))
+    stdscr.refresh()
+
     stdscr.addstr(2,1,'BOOTING SYSTEM.',curses.color_pair(1))
     time.sleep(1.3)
     t()
@@ -123,6 +134,7 @@ def startup(stdscr):
 
     t()
     time.sleep(0.8)
+    noise('poweron')
 
 def showcontrols(stdscr, onoff):
     controlsmenu = stdscr.subwin(8, 74, 15, 3)
