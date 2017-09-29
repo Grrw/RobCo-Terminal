@@ -1,33 +1,25 @@
 import random, json, time, datetime, curses
 
 def noise(kind):
+    """ try -> pygame """
     try:
         import pygame
         pygame.mixer.init()
-        if kind == 'poweron':
-            song = pygame.mixer.Sound("audio/poweron.ogg")
-            pygame.mixer.Sound.play(song)
-            time.sleep(0.7)
-            return
-        elif kind == 'poweroff':
-            song = pygame.mixer.Sound("audio/poweroff.ogg")
-            pygame.mixer.Sound.play(song)
-            time.sleep(0.3)
-            return
-        elif kind == "keys":
+        if kind == "keys":
             noise = random.randint(1, 9)
             key = 'audio/' + str(noise) + '.ogg'
             song = pygame.mixer.Sound(key)
-        elif kind == 'select':
-            song = pygame.mixer.Sound("audio/select.ogg")
-        elif kind == 'boot':
-            song = pygame.mixer.Sound('audio/boot.ogg')
-        elif kind == 'hgboot':
-            song = pygame.mixer.Sound("audio/hgboot.ogg")
+        else:
+            song = pygame.mixer.Sound("audio/" +kind+ ".ogg")
         pygame.mixer.Sound.play(song)
+        if kind == 'poweron':
+            time.sleep(0.7)
+        elif kind == 'poweroff':
+            time.sleep(0.3)
     except:
         f = open('noaudio.txt', 'w+')
         f.write('Pygame not installed')
+    return
 
 def t():
     length = random.gauss(0.15,0.08)
