@@ -3,6 +3,8 @@ def c():
     os.system('cls' if os == 'nt' else 'clear')
     print('security.noise() audio test!\nType the sound you want to play then press return')
     print("Type 'displaysounds' to display all audio options\n")
+
+history = []
 while True:
     c()
     m = input('> ')
@@ -13,8 +15,12 @@ while True:
         for x in list_:
             print(x[:-4])
         input("\nPress return to continue")
-    if m =='secretboot':
+    elif m =='secretboot':
         security.noise('boot')
         security.noise('hgboot')
+    elif m =='history':
+        print(history)
+        input()
     else:
         security.noise(m)
+    history.append(m)
