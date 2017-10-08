@@ -5,7 +5,8 @@ Main Window Size: 25 rows by 80 columns
 """
 
 import security, game
-import curses, time, datetime, os, sys
+import curses, time, datetime, os, sys, time
+from threading import Thread
 from curses import wrapper
 
 def clears(stdscr): # clear and re-box the screen
@@ -13,11 +14,10 @@ def clears(stdscr): # clear and re-box the screen
     screen.box()
     stdscr.refresh()
 
-def mainwindow(stdscr): # print the main menu window
-    now = datetime.datetime.now()
+def mainwindow(stdscr, now): # print the main menu window
     stdscr.addstr(1,20,'ROBCO INDUSTRIES UNIFIED OPERATING SYSTEM',curses.color_pair(1))
     stdscr.addstr(2,22,'COPYRIGHT 2075-2077 ROBCO INDUSTRIES',curses.color_pair(1))
-    stdscr.addstr(3,28,str(now),curses.color_pair(1))
+    stdscr.addstr(3,35,str(now),curses.color_pair(1))
     stdscr.addstr(4,33,'Press Q to Quit',curses.color_pair(1))
     stdscr.addstr(5,22,'-RobCo Trespasser Management System-',curses.color_pair(1))
     stdscr.addstr(6,22,'[==================================]',curses.color_pair(1))
@@ -47,7 +47,8 @@ def main(stdscr):
     mode in the event of an error.
     Even ^C would normally bugger the terminal
     """
-
+    
+    now = datetime.date.today() # get date
     # configure curses settings
     curses.start_color()
     curses.noecho()
@@ -57,14 +58,16 @@ def main(stdscr):
     curses.init_pair(1, curses.COLOR_GREEN, curses.COLOR_BLACK)
     curses.init_pair(2, curses.COLOR_BLACK, curses.COLOR_GREEN)
 
-    # edit make a box 
+    # make a box 
     global screen
     screen = stdscr.subwin(25, 80, 0, 0)
     screen.box()
     screen.refresh()
 
-    """ Turn on startup when done testing """
-    security.startup(stdscr)
+    stdscr.addstr(2,25,'Press any key to begin program.',curses.color_pair(1))
+    m = stdscr.getch()
+    if m != ord('`'):
+        security.startup(stdscr ,now)
 
     quit_ = False # main loop
     while not quit_:
@@ -79,8 +82,7 @@ def main(stdscr):
         quikQuit = False # lazy way to quit but who cares
 
         clears(stdscr)
-        # security.noise('poweron')
-        mainwindow(stdscr)
+        mainwindow(stdscr, now)
 
         # main menu selection
         while not selector:
@@ -113,10 +115,9 @@ def main(stdscr):
                 if row != 0:
                     security.noise('select')
                     selected = True
-                pass
 
             if selected != True:
-                mainwindow(stdscr)
+                mainwindow(stdscr, now)
                 security.noise('keys')
                 if row == 1:
                     stdscr.addstr(7,38,' Easy ', curses.color_pair(2))
@@ -146,11 +147,10 @@ def main(stdscr):
                         stdscr.refresh()
                         time.sleep(1.3)
                         rowFive = False
-                        security.startup(stdscr)
-                        mainwindow(stdscr)
+                        security.startup(stdscr, now)
+                        mainwindow(stdscr, now)
                         rowFour = False
-                        row = 0
-                        colum = 0
+                        
                 elif row == 5:
                     # switch rowFive to allow toggling of the controls
                     if rowFive == False:
@@ -161,30 +161,17 @@ def main(stdscr):
                     quikQuit = True
                 else:
                     pass
+                row = 0
+                colum = 0
+                mainwindow(stdscr, now)
 
-        # while not secondarySelector: 
-
-        #     clears(stdscr)
-
-        #     m = stdscr.getch()
-        #     if m == ord('q'):
-        #         secondarySelector = True
-        #     elif m == 'w':
-        #         print('up')
-        #     elif m == 's':
-        #         print('down')
-        #     elif m == 'a':
-        #         print('left')
-        #     elif m == 'd':
-        #         print('right')
-        #     elif m == '\n':
-        #         print('return')
 
     curses.nocbreak()
     stdscr.keypad(False)
     curses.echo()
     curses.endwin()
 
+### wrapper
 wrapper(main)
 
 
