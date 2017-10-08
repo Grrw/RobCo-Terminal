@@ -1,8 +1,34 @@
-import json, random, curses
+from charword import charword
+from robchar import robchar
+import security
+import json, random, curses, time
 
-def game(stdscr, difficulty):
 
-    level = difficulty
+
+def forChar(length, listName, listRow):
+    for loops in range(length):
+        listName[listRow].append(robchar(charRand(), None))
+
+def charRand():
+    charList = ['#','|','$','!','+',';','/','*','^','=',]
+    return charList[random.randint(0,9)]
+
+def cursesprinter(stdscr, arrayname):
+    line = 7 # print each addstr on a new lne
+    for loops in range(5):
+        looper = 0 # column to print character at
+        for xloop in range(24):
+            stdscr.addstr(line,looper+10,str(arrayname[loops][xloop]),curses.color_pair(1))
+            looper +=2
+        line += 1
+
+def game(stdscr, level):
+
+    # edit make a box 
+    global screen
+    screen = stdscr.subwin(25, 80, 0, 0)
+    screen.box()
+    screen.refresh()
 
     def wordGetter():
         """ Gets words from a list, returning them
@@ -22,35 +48,61 @@ def game(stdscr, difficulty):
         elif level == "hard":
             return(word_data["Hard"][wrdSet])
 
-    # def initrand(user_list, diff):
-    #     """ Takes words from the list,
-    #     returning 5 random words """
-    #     retList = []
-    #     if diff == 'easy':
-    #         wrdAmt = 3
-    #     elif diff == 'medium':
-    #         wrdAmt = 5
-    #     elif dff == 'hard':
-    #         wrdAmt = 7
-
-    #     for x in range(wrdAmt):
-    #         popper = random.randrange(0, len(user_list))
-    #         retList.append(user_list[popper])
-    #         user_list.pop(popper)
-    #     return retList
 
     """ GAMES START HERE """
-    diffList = wordGetter()
+    wordList = wordGetter()
     
-    ### temporary starts
-    stdscr.addstr(13,10,'                                              ')
-    stdscr.addstr(13,10,str(diffList),curses.color_pair(1))
-    ### temporary ends
+    gameAry = [[],[],[],[],[]]
+    for loops in range(5):
+        forChar(24,gameAry,loops)
+            
+    stdscr.clear()
+    security.showcontrols(stdscr, "turnoff")
+
+    cursesprinter(stdscr, gameAry)
+
+    row = 0
+    column = 0
+    selected = False
+    while True:
+        screen.box()
+        m = stdscr.getch()
+        if m == ord('q') or m == ord('Q'): # quit
+            stdscr.clear()
+            screen.box()
+            stdscr.addstr(5,30,"Please Try Again Later!",curses.color_pair(1))
+            stdscr.refresh()
+            security.noise('gamelose')
+            time.sleep(1)
+            stdscr.clear()
+            break
+        elif m == ord('w') or m == ord('W') or m == curses.KEY_UP:
+            row -= 1
+            if row < 0:
+                row = 4
+        elif m == ord('s') or m == ord('S') or m == curses.KEY_DOWN:
+            row += 1
+            if row > 4:
+                row = 0
+        elif m == ord('a') or m == ord('A') or m == curses.KEY_LEFT:
+            column -= 1
+            if column < 0:
+                column = 23
+        elif m == ord('d') or m == ord('D') or m == curses.KEY_RIGHT:
+            column += 1
+            if column > 23:
+                column = 0
+        elif m == curses.KEY_ENTER or m == 10 or m == 13 or m == ord('e'):
+            if row != 0:
+                security.noise('select')
+                selected = True
+        
+        if selected == False:
+            security.noise('keys')
+
+        stdscr.addstr(1,1," " +gameAry[row][column].string()+ " ",curses.color_pair(2))
+
+###
 
 
-    if level == 'easy':
-        pass
-    elif level == 'medium':
-        pass
-    elif level == 'hard':
-        pass
+
