@@ -5,7 +5,7 @@ Main Window Size: 25 rows by 80 columns
 """
 
 import security, game
-import curses, time, datetime, os, sys, time
+import curses, time, datetime, os, sys, time, random
 from threading import Thread
 from curses import wrapper
 
@@ -66,12 +66,21 @@ def main(stdscr):
 
     stdscr.addstr(2,25,'Press any key to begin program.',curses.color_pair(1))
     m = stdscr.getch()
-    if m != ord('`'):
+    if str(now)[5:] == "10-09":
+        security.noise("erik")
+        stdscr.clear()
+        for leifx in range(25):
+            leify = random.randint(1,56)
+            leifz = random.randint(1,2)
+            stdscr.addstr(leifx,leify,"Happy Leif Erikson Day!",curses.color_pair(leifz))
+            stdscr.refresh()
+            time.sleep(0.3)
+        time.sleep(1)
+    elif m != ord('`'):
         security.startup(stdscr ,now)
 
     quit_ = False # main loop
     while not quit_:
-        selector = False # primary loop (main menu)
         secondarySelector= True # secondary loop (actual game)
         row = 0 # internally store what is highlighted on the Y axis
         colum = 0 # internally store what is highlighted on the X axis
@@ -80,12 +89,13 @@ def main(stdscr):
         rowFour = False # to prevent loops
         rowFive = False # controls
         quikQuit = False # lazy way to quit but who cares
+        gameres = None # True for win False for lose
 
         clears(stdscr)
         mainwindow(stdscr, now)
 
         # main menu selection
-        while not selector:
+        while True:
             selected = False
 
             security.showcontrols(stdscr, rowFive)
@@ -97,12 +107,12 @@ def main(stdscr):
                 m = stdscr.getch()
             # 'w' and 's' move the selection in their respective arrow keys
             if m == ord('q') or m == ord('Q'): # quit
-                selector = True
                 stdscr.clear()
                 security.noise('poweroff')
                 stdscr.refresh()
                 time.sleep(0.5)
                 quit_ = True
+                break
             elif m == ord('w') or m == ord('W') or m == curses.KEY_UP:
                 row = row - 1
                 if row <= 0:
@@ -134,11 +144,11 @@ def main(stdscr):
 
             else:
                 if row == 1:
-                    game.game(stdscr, 'easy')
+                    gameres = game.game(stdscr, 'easy')
                 elif row == 2:
-                    game.game(stdscr, 'medium')
+                    gameres = game.game(stdscr, 'medium')
                 elif row == 3:
-                    game.game(stdscr, 'hard')
+                    gamres = game.game(stdscr, 'hard')
                 elif row == 4:
                     rowFour = True
                     if rowFour == True:
@@ -164,6 +174,19 @@ def main(stdscr):
                 row = 0
                 colum = 0
                 mainwindow(stdscr, now)
+
+            if gameres == False:
+                stdscr.clear()
+                stdscr.addstr(11,32,"Terminal Locked.",curses.color_pair(1))
+                stdscr.addstr(12,26,"Please contact admnistrator.",curses.color_pair(1))
+                stdscr.refresh()
+                # m = stdscr.getch() # waits for user input of any char
+                time.sleep(3)
+                gameres == None
+                quikQuit = True
+            elif gameres == True:
+                stdscr.clear()
+                stdscr.addstr(1,1,"win",curses.color_pair(1))
 
 
     curses.nocbreak()

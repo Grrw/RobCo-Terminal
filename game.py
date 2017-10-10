@@ -22,6 +22,12 @@ def cursesprinter(stdscr, arrayname):
             looper +=2
         line += 1
 
+def attemptsleft(attempts):
+    retStr = ""
+    for loops in range(attempts):
+        retStr += " █"
+    return retStr
+
 def game(stdscr, level):
 
     # edit make a box 
@@ -59,23 +65,32 @@ def game(stdscr, level):
     stdscr.clear()
     security.showcontrols(stdscr, "turnoff")
 
+
     cursesprinter(stdscr, gameAry)
 
+    attempts = 4
     row = 0
     column = 0
     selected = False
     while True:
+        stdscr.addstr(1,1,"ROBCO INDUSTRIES TERMLINK (TM) PROTOCOL",curses.color_pair(1))
+        stdscr.addstr(2,1,"ENTER PASSWORD NOW",curses.color_pair(1))
+        stdscr.addstr(4,1,str(attempts)+" ATTEMPTS LEFT:"+attemptsleft(attempts),curses.color_pair(1))
+
+        if attempts == 0:
+            security.noise('gamelose')
+            break
+
         screen.box()
         m = stdscr.getch()
         if m == ord('q') or m == ord('Q'): # quit
             stdscr.clear()
             screen.box()
-            stdscr.addstr(5,30,"Please Try Again Later!",curses.color_pair(1))
             stdscr.refresh()
             security.noise('gamelose')
             time.sleep(1)
             stdscr.clear()
-            break
+            return
         elif m == ord('w') or m == ord('W') or m == curses.KEY_UP:
             row -= 1
             if row < 0:
@@ -99,9 +114,15 @@ def game(stdscr, level):
         
         if selected == False:
             security.noise('keys')
+        else:
+            attempts -= 1
+            selected = False
 
-        stdscr.addstr(1,1," " +gameAry[row][column].string()+ " ",curses.color_pair(2))
+        # display selected character
+        stdscr.addstr(5,40," " +gameAry[row][column].string()+ " ",curses.color_pair(2))
 
+    ### for gamefailed
+    return False
 ###
 
 
