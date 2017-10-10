@@ -25,8 +25,7 @@ def t():
     length = random.gauss(0.15,0.08)
     time.sleep(max(0, length))
 
-def startup(stdscr):
-    now = datetime.datetime.now()
+def startup(stdscr, now):
     length = random.randrange(30021, 68904, 7)
     startupList = [
         'RobCo-OS v7.6.0.3',
@@ -97,7 +96,7 @@ def startup(stdscr):
     stdscr.refresh()
     t()
     stdscr.addstr(2,22,'COPYRIGHT 2075-2077 ROBCO INDUSTRIES',curses.color_pair(1))
-    stdscr.addstr(3,28,str(now),curses.color_pair(1))
+    stdscr.addstr(3,36,str(now),curses.color_pair(1))
     stdscr.refresh()
     stdscr.addstr(4,37,'[',curses.color_pair(1))
     stdscr.addstr(4,41,']',curses.color_pair(1))
@@ -131,6 +130,8 @@ def startup(stdscr):
 def showcontrols(stdscr, onoff):
     controlsmenu = stdscr.subwin(8, 74, 15, 3)
     controlslist = stdscr.subwin(8, 22, 15, 30)
+    if onoff == "turnoff":
+        stdscr.clear()
     if onoff == True:
         controlslist.clear()
         controlsmenu.box()
